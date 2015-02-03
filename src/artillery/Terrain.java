@@ -17,6 +17,9 @@ public class Terrain extends Base {
 	private Vector2i baseOffset = new Vector2i(0, 5);
 	
 	private ArrayList<Vector2i> fractal = new ArrayList<Vector2i>();
+	// Our "roughness" constant.
+	private float H = 0.5f;
+	private int initialHeight = 25;
 	
 	private void createFractal(int fractures, float persistence) {
 		// Initialize fractal
@@ -25,20 +28,17 @@ public class Terrain extends Base {
 		fractal.add(new Vector2i(0, baseOffset.y));
 		// Add a point on the right side of the window.
 		fractal.add(new Vector2i(mapSize, baseOffset.y));
+		fractal.add(new Vector2i(mapSize/2, baseOffset.y + initialHeight));
 		for (int n = 0; n < fractures; n++) {
 			// Create fractures.
-			int nodes = fractal.size();
 			for (int i = 1; i < fractal.size(); i++) {
 				Vector2i node1 = fractal.get(i-1);
 				Vector2i node2 = fractal.get(i);
-				System.out.println((Math.random() * persistence) * 2 - persistence);
-				fractal.add(i, new Vector2i((node1.x + node2.x)/2, (int) (((node1.y + node2.y)/2) + (((Math.random() * persistence) * 2) - persistence))));
+				float randomness = (float) (((Math.random() * persistence * 2) - persistence)*10);
+				fractal.add(i, new Vector2i((node1.x + node2.x)/2, (int) (((node1.y + node2.y)/2) + randomness)));
 				i++;
 			}
-			persistence /= 2;
-		}
-		for (Vector2i vec : fractal) {
-			System.out.println(vec);
+			persistence /= Math.pow(2, H);
 		}
 	}
 	
@@ -54,22 +54,21 @@ public class Terrain extends Base {
 		createFractal(5, 1);
 		
 		gl.glNewList(index, GL2.GL_COMPILE);
-		for (int i = 0; i < mapSize; i++) {
-			float x = 0;
-
+		for (int i = 0; i < fractal.size(); i++) {
+			Vector2i node = fractal.get(i);
 			gl.glPushMatrix();
 			gl.glTranslatef(offset.x, offset.y, offset.z);
 
 			gl.glBegin(GL2.GL_QUADS);
 			gl.glColor3f(5, 5, 5);
 			// gl.glTexCoord2f(0, 0);
-			gl.glVertex3f(i - 1f, 0, -x);
+			gl.glVertex3f(node.x - .5f, 0, -node.y - .5f);
 			// gl.glTexCoord2f(1, 0);
-			gl.glVertex3f(i + 1f, 0, -x);
+			gl.glVertex3f(node.x + .5f, 0, -node.y - .5f);
 			// gl.glTexCoord2f(1, 1);
-			gl.glVertex3f(i + 1f, 0, Main.HEIGHT);
+			gl.glVertex3f(node.x + .5f, 0, -node.y + .5f);
 			// gl.glTexCoord2f(0, 1);
-			gl.glVertex3f(i - 1f, 0, Main.HEIGHT);
+			gl.glVertex3f(node.x - .5f, 0, -node.y + .5f);
 			gl.glEnd();
 
 			gl.glPopMatrix();
