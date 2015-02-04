@@ -1,7 +1,6 @@
 package artillery;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
