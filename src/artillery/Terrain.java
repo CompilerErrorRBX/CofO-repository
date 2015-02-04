@@ -26,8 +26,8 @@ public class Terrain extends Base {
 		// Add a point on the left side of the window.
 		fractal.add(new Vector2i(0, baseOffset.y));
 		// Add a point on the right side of the window.
-		fractal.add(new Vector2i(mapSize, baseOffset.y));
 		fractal.add(new Vector2i(mapSize/2, baseOffset.y + initialHeight));
+		fractal.add(new Vector2i(mapSize, baseOffset.y));
 		for (int n = 0; n < fractures; n++) {
 			// Create fractures.
 			for (int i = 1; i < fractal.size(); i++) {
@@ -38,6 +38,9 @@ public class Terrain extends Base {
 				i++;
 			}
 			persistence /= Math.pow(2, H);
+		}
+		for (Vector2i vec : fractal) {
+			System.out.println(vec);
 		}
 	}
 	
