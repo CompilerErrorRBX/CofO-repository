@@ -27,12 +27,17 @@ public class Window implements GLEventListener {
 	static GLProfile glp;
 	static GLU glu = new GLU();
 	
+	public static GLAutoDrawable drawable;
+	
+	private Vector2i mouseCoords = new Vector2i();
+	private Vector3f mouseToWorldSpace = new Vector3f();
+	
 	private TextureManager textureMgr = new TextureManager();
 	
 	// Window size (width,height)
 	Vector2i vSize2i = new Vector2i();
 	
-	public static final int FPS = 30;
+	public static final int FPS = 30; // Setting the refresh rate for our window.
 
 	public ArrayList<Base> baseList = new ArrayList<Base>();
 	public ArrayList<Base> baseEventList = new ArrayList<Base>();
@@ -72,6 +77,14 @@ public class Window implements GLEventListener {
 
 			@Override
 			public void mouseClicked(MouseEvent event) {
+				for (Vector2i node : Terrain.fractal) {
+					//System.out.println(new Vector2i(node.x - ((int) mouseToWorldSpace.x + (Main.WIDTH/2)), node.y - ((int) mouseToWorldSpace.y) + (Main.HEIGHT/2)).magnitude());
+					System.out.println(node.x + " -> " + (mouseToWorldSpace.x + (Main.WIDTH/2)));
+					System.out.println(node.y + " -> " + (mouseToWorldSpace.z + (Main.HEIGHT/2)));
+					if (new Vector2i(node.x - ((int) mouseToWorldSpace.x + (Main.WIDTH/2)), node.y - ((int) mouseToWorldSpace.z) - (Main.HEIGHT/2)).magnitude() < 25) {
+						System.out.println("Move node.");
+					}
+				}
 				for (Base base : baseEventList) {
 					if(!base.mouseClicked(event)) {
 						return;
@@ -108,6 +121,7 @@ public class Window implements GLEventListener {
 
 			@Override
 			public void mouseMoved(MouseEvent event) {
+				mouseCoords = new Vector2i(event.getX(), event.getY());
 				for (Base base : baseEventList) {
 					if(!base.mouseMoved(event)) {
 						return;
@@ -192,9 +206,6 @@ public class Window implements GLEventListener {
 			
 			baseList.add(obj);
 			baseEventList.add(eventIndex, obj);
-			
-			System.out.println("Added " + obj + " into bases");
-			System.out.println(baseList.size());
 		}
 	}
 	
@@ -216,6 +227,8 @@ public class Window implements GLEventListener {
 	
 	public void render(GLAutoDrawable drawable) {
 		GL2 gl = drawable.getGL().getGL2();
+		
+		mouseToWorldSpace = ScreenSpaceToOpenGL(mouseCoords.x, mouseCoords.y, 1.0f, drawable);
 		
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 		
@@ -239,7 +252,7 @@ public class Window implements GLEventListener {
                 gl.glLoadIdentity();
                 glu.gluOrtho2D(0.0, vSize2i.x, 0.0, vSize2i.y);
                 gl.glMatrixMode(GL2.GL_MODELVIEW);
-                gl.glLoadIdentity() ;
+                gl.glLoadIdentity();
             }
 			
 			gl.glPushMatrix();
@@ -264,7 +277,9 @@ public class Window implements GLEventListener {
 	}
 
 	@Override
-	public void init(GLAutoDrawable drawable) {
+	public void init(GLAutoDrawable pDrawable) {
+		drawable = pDrawable;
+		
 		// Initialize base objects
 		for (Base base : baseList) {
 			base.init(this, drawable);

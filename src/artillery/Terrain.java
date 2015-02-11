@@ -10,80 +10,97 @@ import artillery.Window;
 
 public class Terrain extends Base {
 
-	private int mapSize = 100;
-	private int index = 0;
+	public static int mapSize = 500; // Map size.
+	private int index = 0; // Don't worry about this :)
 	
-	private Vector2i baseOffset = new Vector2i(0, 5);
+	private Vector2i baseOffset = new Vector2i(0, 5); // Our base offset variable.
 	
-	private ArrayList<Vector2i> fractal = new ArrayList<Vector2i>();
+	public static ArrayList<Vector2i> fractal = new ArrayList<Vector2i>();
 	// Our "roughness" constant.
-	private float H = 0.5f;
-	private int initialHeight = 25;
+	private float H = 1f; // This is the factor used to decrement our persistence value (The higher this value the smoother the terrain.)
+	private int initialHeight = (int) (Math.random() * 100) + 50;
 	
 	private void createFractal(int fractures, float persistence) {
 		// Initialize fractal
 		fractal = new ArrayList<Vector2i>();
-		// Add a point on the left side of the window.
-		fractal.add(new Vector2i(0, baseOffset.y));
-		// Add a point on the right side of the window.
-		fractal.add(new Vector2i(mapSize/2, baseOffset.y + initialHeight));
-		fractal.add(new Vector2i(mapSize, baseOffset.y));
+		fractal.add(new Vector2i(0, baseOffset.y)); // Add a point on the left side of the window.
+		fractal.add(new Vector2i(mapSize/2, baseOffset.y + initialHeight)); // Add a point in the center of the window.
+		fractal.add(new Vector2i(mapSize, baseOffset.y)); // Add a point on the right side of the window.
 		for (int n = 0; n < fractures; n++) {
 			// Create fractures.
 			for (int i = 1; i < fractal.size(); i++) {
-				Vector2i node1 = fractal.get(i-1);
-				Vector2i node2 = fractal.get(i);
-				float randomness = (float) (((Math.random() * persistence * 2) - persistence)*10);
-				fractal.add(i, new Vector2i((node1.x + node2.x)/2, (int) (((node1.y + node2.y)/2) + randomness)));
-				i++;
+				Vector2i node1 = fractal.get(i-1); // Get the previous point
+				Vector2i node2 = fractal.get(i); // Get the current point
+				float randomness = (float) (((Math.random() * persistence * 2) - persistence)*40); // Create a randomness factor
+				fractal.add(i, new Vector2i((node1.x + node2.x)/2, (int) (((node1.y + node2.y)/2) + randomness))); // Place a new point between the two other points
+				// and add the randomness.
+				i++; // Increment 'i' an extra time.
 			}
-			persistence /= Math.pow(2, H);
-		}
-		for (Vector2i vec : fractal) {
-			System.out.println(vec);
+			persistence /= Math.pow(2, H); // Reduce the persistence by our H factor.
 		}
 	}
 	
+	private void drawTerrainSquare(GLAutoDrawable drawable, Vector2i p1, Vector2i p2) {
+		GL2 gl = drawable.getGL().getGL2();
+		
+		gl.glColor3f(0.5f, 2.5f, 1f); // Setting color to green.
+		
+		gl.glBegin(GL2.GL_TRIANGLES); // Telling OpenGL we're drawing a triangle.
+		
+		// Drawing the first triangle.
+		
+		gl.glVertex3f(p1.x, 0, -p1.y); // Create a vertex at our first node's position.
+		gl.glVertex3f(p2.x, 0, -p2.y); // Create a vertex at our second node's position.
+		gl.glColor3f(1.5f, 1.5f, 1.5f);
+		gl.glVertex3f(p1.x, 0, 10); // Go to the bottom of the screen.
+	 
+		// Drawing the second triangle.
+		
+		gl.glColor3f(0.5f, 2.5f, 1f);
+		
+		gl.glVertex3f(p2.x, 0, -p2.y); // Create a vertex at our second node's position.
+		gl.glColor3f(1.5f, 1.5f, 1.5f);
+		gl.glVertex3f(p2.x, 0, 10); // Go to the bottom of the screen.
+		gl.glVertex3f(p1.x, 0, 10); // Go to the bottom of the screen.
+		
+		gl.glEnd(); // Telling OpenGL we're done drawing.
+	}
+	
 	public void init(Window win, GLAutoDrawable drawable) {
-		System.out.println("Initilizing map");
 		GL2 gl = drawable.getGL().getGL2();
 
 		Vector3f offset = new Vector3f(-mapSize / 2f, 0.0f,
-				(mapSize / 2.0f) - 5);
+				(mapSize / 2.0f) - 5); // Create an offset so that we're centered on the camera.
 
-		index = gl.glGenLists(1);
+		index = gl.glGenLists(1); // Create a draw list.
 		
-		createFractal(5, 1);
+		createFractal(6, 1f); // Create our fractal map.
 		
-		gl.glNewList(index, GL2.GL_COMPILE);
-		for (int i = 0; i < fractal.size(); i++) {
-			Vector2i node = fractal.get(i);
-			gl.glPushMatrix();
-			gl.glTranslatef(offset.x, offset.y, offset.z);
-
-			gl.glBegin(GL2.GL_QUADS);
-			gl.glColor3f(5, 5, 5);
-			// gl.glTexCoord2f(0, 0);
-			gl.glVertex3f(node.x - .5f, 0, -node.y - .5f);
-			// gl.glTexCoord2f(1, 0);
-			gl.glVertex3f(node.x + .5f, 0, -node.y - .5f);
-			// gl.glTexCoord2f(1, 1);
-			gl.glVertex3f(node.x + .5f, 0, -node.y + .5f);
-			// gl.glTexCoord2f(0, 1);
-			gl.glVertex3f(node.x - .5f, 0, -node.y + .5f);
-			gl.glEnd();
-
-			gl.glPopMatrix();
+		gl.glNewList(index, GL2.GL_COMPILE); // Tell OpenGL we want to start a new draw list.
+		
+		gl.glPushMatrix(); // Push the coordinate matrix.
+		gl.glTranslatef(offset.x, offset.y, offset.z); // Translate the coordinate matrix by our offset.
+		
+		for (int i = 1; i < fractal.size(); i++) { // Increment through the fractal map.
+			Vector2i node1 = fractal.get(i); // Get the current node
+			Vector2i node2 = fractal.get(i-1); // Get the previous node
+			
+			drawTerrainSquare(drawable, node2, node1); // Draw the terrain square between those two nodes.
+			
 		}
-		gl.glEndList();
+		
+		gl.glPopMatrix(); // Return the matrix to it's original coordinate plane.
+		
+		gl.glEndList(); // Tell OpenGL we're done making our draw list.
 
 		this.getCamera().set(new Vector3f(0, mapSize, 0.2f),
-				new Vector3f(0, 0, 0), new Vector3f(0.0f, 1.0f, 0.0f));
+				new Vector3f(0, 0, 0), new Vector3f(0.0f, 1.0f, 0.0f)); // Set the camera's position.
 	}
 
 	@Override
 	public void render(GLAutoDrawable drawable) {
 		GL2 gl = drawable.getGL().getGL2();
-		gl.glCallList(index);
+		gl.glCallList(index); // Render the draw list.
+		
 	}
 }

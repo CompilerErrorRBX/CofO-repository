@@ -7,6 +7,10 @@ import com.jogamp.newt.event.MouseEvent;
 
 public class Base {
 	
+	private Window window; 
+	private Camera camera;
+	private TextureManager textureMgr;
+	
 	public enum DrawMode {
 		DM_3D,
 		DM_2D
@@ -60,9 +64,4 @@ public class Base {
 	public void setTextureManager(TextureManager textureManager) {
 		this.textureMgr = textureManager;
 	}
-
-	// My privates
-	private Window window; 
-	private Camera camera;
-	private TextureManager textureMgr;
 }
