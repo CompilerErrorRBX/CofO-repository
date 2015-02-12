@@ -18,13 +18,29 @@ public class Terrain extends Base {
 	public static ArrayList<Vector2i> fractal = new ArrayList<Vector2i>();
 	// Our "roughness" constant.
 	private float H = 1f; // This is the factor used to decrement our persistence value (The higher this value the smoother the terrain.)
-	private int initialHeight = (int) (Math.random() * 100) + 50;
+	private int initialHeight = (int) (Math.random() * 80) + 25;
+	private float zIndex = 0;
+	private int fractals = 6; // Number of times to fracture our line
+	private float persistence = 1f;
+	
+	public Terrain(float roughness, float pPersistence, float pZIndex, int pIntitialHeight, int pFractals, Vector2i pBaseOffset) {
+		H = roughness;
+		initialHeight = pIntitialHeight;
+		fractals = pFractals;
+		persistence = pPersistence;
+		zIndex = pZIndex;
+		baseOffset = pBaseOffset;
+	}
+	
+	public Terrain() {
+		
+	}
 	
 	private void createFractal(int fractures, float persistence) {
 		// Initialize fractal
 		fractal = new ArrayList<Vector2i>();
 		fractal.add(new Vector2i(0, baseOffset.y)); // Add a point on the left side of the window.
-		fractal.add(new Vector2i(mapSize/2, baseOffset.y + initialHeight)); // Add a point in the center of the window.
+		fractal.add(new Vector2i((mapSize/2) + baseOffset.x, baseOffset.y + initialHeight)); // Add a point in the center of the window shifted over by offset.x.
 		fractal.add(new Vector2i(mapSize, baseOffset.y)); // Add a point on the right side of the window.
 		for (int n = 0; n < fractures; n++) {
 			// Create fractures.
@@ -43,25 +59,25 @@ public class Terrain extends Base {
 	private void drawTerrainSquare(GLAutoDrawable drawable, Vector2i p1, Vector2i p2) {
 		GL2 gl = drawable.getGL().getGL2();
 		
-		gl.glColor3f(0.5f, 2.5f, 1f); // Setting color to green.
+		gl.glColor3f(0.5f, 2.5f + zIndex, 1f); // Setting color to green.
 		
 		gl.glBegin(GL2.GL_TRIANGLES); // Telling OpenGL we're drawing a triangle.
 		
 		// Drawing the first triangle.
 		
-		gl.glVertex3f(p1.x, 0, -p1.y); // Create a vertex at our first node's position.
-		gl.glVertex3f(p2.x, 0, -p2.y); // Create a vertex at our second node's position.
-		gl.glColor3f(1.5f, 1.5f, 1.5f);
-		gl.glVertex3f(p1.x, 0, 10); // Go to the bottom of the screen.
+		gl.glVertex3f(p1.x, 0.1f * zIndex, -p1.y); // Create a vertex at our first node's position.
+		gl.glVertex3f(p2.x, 0.1f * zIndex, -p2.y); // Create a vertex at our second node's position.
+		gl.glColor3f(0.5f, 1.5f + zIndex, 0.5f); // Select a darker color.
+		gl.glVertex3f(p1.x, 0.1f * zIndex, 20); // Go to the bottom of the screen.
 	 
 		// Drawing the second triangle.
 		
-		gl.glColor3f(0.5f, 2.5f, 1f);
+		gl.glColor3f(0.5f, 2.5f + zIndex, 1f); // Reset to initial color.
 		
-		gl.glVertex3f(p2.x, 0, -p2.y); // Create a vertex at our second node's position.
-		gl.glColor3f(1.5f, 1.5f, 1.5f);
-		gl.glVertex3f(p2.x, 0, 10); // Go to the bottom of the screen.
-		gl.glVertex3f(p1.x, 0, 10); // Go to the bottom of the screen.
+		gl.glVertex3f(p2.x, 0.1f * zIndex, -p2.y); // Create a vertex at our second node's position.
+		gl.glColor3f(0.5f, 1.5f + zIndex, 0.5f); // Select a darker color.
+		gl.glVertex3f(p2.x, 0.1f * zIndex, 20); // Go to the bottom of the screen.
+		gl.glVertex3f(p1.x, 0.1f * zIndex, 20); // Go to the bottom of the screen.
 		
 		gl.glEnd(); // Telling OpenGL we're done drawing.
 	}
@@ -74,7 +90,7 @@ public class Terrain extends Base {
 
 		index = gl.glGenLists(1); // Create a draw list.
 		
-		createFractal(6, 1f); // Create our fractal map.
+		createFractal(fractals, persistence); // Create our fractal map.
 		
 		gl.glNewList(index, GL2.GL_COMPILE); // Tell OpenGL we want to start a new draw list.
 		

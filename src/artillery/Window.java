@@ -32,6 +32,8 @@ public class Window implements GLEventListener {
 	private Vector2i mouseCoords = new Vector2i();
 	private Vector3f mouseToWorldSpace = new Vector3f();
 	
+	private Vector3f offset = new Vector3f(-Terrain.mapSize / 2.0f, 0.0f, (Terrain.mapSize / 2.0f) - 5);
+	
 	private TextureManager textureMgr = new TextureManager();
 	
 	// Window size (width,height)
