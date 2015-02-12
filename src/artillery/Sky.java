@@ -22,14 +22,14 @@ public class Sky extends Base {
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glColor3f(0.5f, 4f, 5);
 		//gl.glTexCoord2f(0, 0);
-		gl.glVertex3f(0, 0, 0);
+		gl.glVertex3f(0, -1.1f, 0);
 		//gl.glTexCoord2f(1, 0);
-		gl.glVertex3f(Terrain.mapSize, 0, 0);
+		gl.glVertex3f(Terrain.mapSize, -1.1f, 0);
 		//gl.glTexCoord2f(1, 1);
 		gl.glColor3f(0.5f, 2.5f, 3.5f);
-		gl.glVertex3f(Terrain.mapSize, 0, -Terrain.mapSize);
+		gl.glVertex3f(Terrain.mapSize, -1.1f, -Terrain.mapSize);
 		//gl.glTexCoord2f(0, 1);
-		gl.glVertex3f(0, 0, -Terrain.mapSize);
+		gl.glVertex3f(0, -1.1f, -Terrain.mapSize);
 		gl.glEnd();
 		
 		gl.glPopMatrix();

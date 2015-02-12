@@ -65,19 +65,19 @@ public class Terrain extends Base {
 		
 		// Drawing the first triangle.
 		
-		gl.glVertex3f(p1.x, 0.1f * zIndex, -p1.y); // Create a vertex at our first node's position.
-		gl.glVertex3f(p2.x, 0.1f * zIndex, -p2.y); // Create a vertex at our second node's position.
+		gl.glVertex3f(p1.x, 1f * zIndex, -p1.y); // Create a vertex at our first node's position.
+		gl.glVertex3f(p2.x, 1f * zIndex, -p2.y); // Create a vertex at our second node's position.
 		gl.glColor3f(0.5f, 1.5f + zIndex, 0.5f); // Select a darker color.
-		gl.glVertex3f(p1.x, 0.1f * zIndex, 20); // Go to the bottom of the screen.
+		gl.glVertex3f(p1.x, 1f * zIndex, 20); // Go to the bottom of the screen.
 	 
 		// Drawing the second triangle.
 		
 		gl.glColor3f(0.5f, 2.5f + zIndex, 1f); // Reset to initial color.
 		
-		gl.glVertex3f(p2.x, 0.1f * zIndex, -p2.y); // Create a vertex at our second node's position.
+		gl.glVertex3f(p2.x, 1f * zIndex, -p2.y); // Create a vertex at our second node's position.
 		gl.glColor3f(0.5f, 1.5f + zIndex, 0.5f); // Select a darker color.
-		gl.glVertex3f(p2.x, 0.1f * zIndex, 20); // Go to the bottom of the screen.
-		gl.glVertex3f(p1.x, 0.1f * zIndex, 20); // Go to the bottom of the screen.
+		gl.glVertex3f(p2.x, 1f * zIndex, 20); // Go to the bottom of the screen.
+		gl.glVertex3f(p1.x, 1f * zIndex, 20); // Go to the bottom of the screen.
 		
 		gl.glEnd(); // Telling OpenGL we're done drawing.
 	}

@@ -18,7 +18,7 @@ public class Main {
 		
 		Window window = new Window(); // Create a new window instance.
 		
-		Terrain terrain = new Terrain(1f, 1f, -0.5f, bckgrndTerrainShift, 6, new Vector2i(0, 5)); // Create new terrain instance.
+		Terrain terrain = new Terrain(1f, 1f, 0, bckgrndTerrainShift, 6, new Vector2i(0, 5)); // Create new terrain instance.
 		Terrain bckgrndTerrain = new Terrain(1f, 1f, -0.5f, bckgrndTerrainShift + 10, 6, new Vector2i(0, 40)); // Create the background terrain.
 		Terrain bckgrndTerrain2 = new Terrain(1f, 1f, -0.8f, bckgrndTerrainShift + 15, 6, new Vector2i(0, 60)); // Create the background terrain.
 		
