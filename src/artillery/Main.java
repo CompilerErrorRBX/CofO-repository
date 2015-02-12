@@ -9,18 +9,19 @@ public class Main {
 	public static final int WIDTH = 800; // Screen width
 	public static final int HEIGHT = 800; // Screen height
 	
+	public static Terrain terrain; 
+	
 	public static void main(String[] args) {
 		String version = "v" +  MAJOR_VERSION + "." + MINOR_VERSION + "." + PATCH_VERSION;
 		
-		int bckgrndTerrainShift = (int) ((Math.random() * 30) * 2) - 30; // Creating a random number between -mapSize/2 and mapSize/2
-		
-		System.out.println(bckgrndTerrainShift);
+		int maximumHeight = 65;
+		int bckgrndTerrainShift = (int) ((Math.random() * maximumHeight) * 2) - maximumHeight; // Creating a random number between -maximumHeight and maximumHeight
 		
 		Window window = new Window(); // Create a new window instance.
 		
-		Terrain terrain = new Terrain(1f, 1f, 0, bckgrndTerrainShift, 6, new Vector2i(0, 5)); // Create new terrain instance.
-		Terrain bckgrndTerrain = new Terrain(1f, 1f, -0.5f, bckgrndTerrainShift + 10, 6, new Vector2i(0, 40)); // Create the background terrain.
-		Terrain bckgrndTerrain2 = new Terrain(1f, 1f, -0.8f, bckgrndTerrainShift + 15, 6, new Vector2i(0, 60)); // Create the background terrain.
+		terrain = new Terrain(1f, 1f, 0, bckgrndTerrainShift, 6, new Vector2i(0, 70)); // Create new terrain instance.
+		Terrain bckgrndTerrain = new Terrain(1f, 1f, -0.5f, bckgrndTerrainShift + 10, 5, new Vector2i(0, 100)); // Create the background terrain.
+		Terrain bckgrndTerrain2 = new Terrain(1f, 1f, -0.8f, bckgrndTerrainShift + 15, 5, new Vector2i(0, 110)); // Create the background terrain.
 		
 		Sky sky = new Sky();
 		

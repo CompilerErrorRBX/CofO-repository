@@ -32,8 +32,15 @@ public class Terrain extends Base {
 		baseOffset = pBaseOffset;
 	}
 	
-	public Terrain() {
-		
+	public Terrain() {}
+	
+	public Vector2i getTerrainAt(int x, int y) { // x and y coordinate of the tank for instance.
+		Vector2i intercept;
+		for (int i = 1; i < fractal.size(); i++) { // Iterate through the fractal map to find a line that intersects our line over our position.
+			intercept = Vector2i.getLineIntercept(new Vector2i(x, y), new Vector2i(x, 20), fractal.get(i-1), fractal.get(i)); // Check for intersection.
+			if (intercept != null) return intercept; // Found a line that was intersected. Return the point of intercept.
+		}
+		return null; // No line collision... must not be on terrain?
 	}
 	
 	private void createFractal(int fractures, float persistence) {
