@@ -15,6 +15,7 @@ import javax.media.opengl.glu.GLU;
 import artillery.Base.DrawMode;
 
 import com.jogamp.newt.event.KeyEvent;
+import com.jogamp.newt.event.InputEvent;
 import com.jogamp.newt.event.KeyListener;
 import com.jogamp.newt.event.MouseEvent;
 import com.jogamp.newt.event.MouseListener;
@@ -59,21 +60,7 @@ public class Window implements GLEventListener {
 		
 		vSize2i = new Vector2i(width, height);
 		
-		glWindow.addKeyListener(new KeyListener() {
-			@Override
-			public void keyPressed(KeyEvent event) {
-				for (Base base : baseEventList) {
-					base.keyPressed(event);
-				}
-			}
-
-			@Override
-			public void keyReleased(KeyEvent event) {
-				for (Base base : baseEventList) {
-					base.keyReleased(event);
-				}
-			}
-		});
+		glWindow.addKeyListener(new keyListener());
 		
 		glWindow.addMouseListener(new MouseListener() {
 
@@ -325,5 +312,33 @@ public class Window implements GLEventListener {
 		gl.glEnable(GL.GL_BLEND);
 		
 		gl.glEnable( GL.GL_TEXTURE_2D );
+	}
+	public class keyListener implements KeyListener {
+		int seq = 0;
+		public keyListener() {
+			seq = 0;
+		}
+		@Override
+		public void keyPressed(KeyEvent event) {
+			if (0 == ( InputEvent.AUTOREPEAT_MASK & event.getModifiers())) {
+				for (Base base : baseEventList) {
+					if(!base.keyPressed(event)) {
+						return;
+					}
+				}
+				seq++;
+			}
+		}
+		@Override
+		public void keyReleased(KeyEvent event) {
+			if (0 == ( InputEvent.AUTOREPEAT_MASK & event.getModifiers())) {
+				for (Base base : baseEventList) {
+					if(!base.keyReleased(event)) {
+						return;
+					}
+				}
+				seq++;
+			}
+		}
 	}
 }

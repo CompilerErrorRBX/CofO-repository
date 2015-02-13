@@ -10,6 +10,8 @@ public class Sky extends Base {
 	public void init(Window win, GLAutoDrawable drawable) {
 		GL2 gl = drawable.getGL().getGL2();
 		
+		this.setTextureManager(new TextureManager());
+		
 		this.getCamera().set(new Vector3f(0, Terrain.mapSize, 0.2f),
 				new Vector3f(0, 0, 0), new Vector3f(0.0f, 1.0f, 0.0f)); // Set the camera's position.
 	}
@@ -29,24 +31,28 @@ public class Sky extends Base {
 		gl.glColor3f(0.5f, 2f, 3f);
 		gl.glVertex3f(Terrain.mapSize, -1.1f, -Terrain.mapSize);
 		gl.glVertex3f(0, -1.1f, -Terrain.mapSize);
+		gl.glEnd();
 		
 		// Draw sun
-		//this.getTextureManager().textureFromFile("texture/Sun.png", "png", false).bind(gl);
-		gl.glColor3f(5, 5, 0);
+		this.getTextureManager().textureFromFile("texture/Sun.png", "png", false).bind(gl); // Set the texture.
+		
+		gl.glBegin(GL2.GL_QUADS);
+		
+		gl.glColor4f(5, 5, 0, 1);
 		gl.glTexCoord2f(0, 0);
-		gl.glVertex3f(Terrain.mapSize - 50, -1f, -Terrain.mapSize + 50);
+		gl.glVertex3f(Terrain.mapSize/2 - 75, -1f, -Terrain.mapSize + 75);
 		gl.glTexCoord2f(1, 0);
-		gl.glVertex3f(Terrain.mapSize, -1f, -Terrain.mapSize + 50);
+		gl.glVertex3f(Terrain.mapSize/2, -1f, -Terrain.mapSize + 75);
 		gl.glTexCoord2f(1, 1);
-		gl.glVertex3f(Terrain.mapSize, -1f, -Terrain.mapSize);
+		gl.glVertex3f(Terrain.mapSize/2, -1f, -Terrain.mapSize);
 		gl.glTexCoord2f(0, 1);
-		gl.glVertex3f(Terrain.mapSize - 50, -1f, -Terrain.mapSize);
+		gl.glVertex3f(Terrain.mapSize/2 - 75, -1f, -Terrain.mapSize);
 		
 		gl.glEnd();
 		
 		gl.glPopMatrix();
 		
-		//this.getTextureManager().textureFromFile("texture/Sun.png", "png", false).disable(gl);
+		this.getTextureManager().textureFromFile("texture/Sun.png", "png", false).destroy(gl);
 		
 	}
 }

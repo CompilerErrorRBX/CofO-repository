@@ -54,7 +54,7 @@ public class Vector2i {
 				((p3.x - p4.x) * ((p1.x * p2.y) - (p1.y * p2.x)) - (p1.x - p2.x) * (p3.x * p4.y - p3.y * p4.x)) / d,
 				((p3.y - p4.y) * ((p1.x * p2.y) - (p1.y * p2.x)) - (p1.y - p2.y) * (p3.x * p4.y - p3.y * p4.x)) / d
 				);
-		if (intercept.magnitude(p1) + intercept.magnitude(p2) > p1.magnitude(p2)) return null; // Intercept point is not within line segment.
+		//if (intercept.magnitude(p1) + intercept.magnitude(p2) > p1.magnitude(p2)) return null; // Intercept point is not within line segment.
 		if (intercept.magnitude(p3) + intercept.magnitude(p4) > p3.magnitude(p4)) return null; // Intercept point is not within line segment.
 		return intercept;
 	}

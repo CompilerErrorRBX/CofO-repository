@@ -9,7 +9,7 @@ public class Base {
 	
 	private Window window; 
 	private Camera camera;
-	private TextureManager textureMgr = new TextureManager();
+	private TextureManager textureMgr;
 	
 	public enum DrawMode {
 		DM_3D,
