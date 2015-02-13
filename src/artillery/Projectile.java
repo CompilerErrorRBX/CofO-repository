@@ -168,5 +168,10 @@ public class Projectile {
 	public void setAngleDegrees(float dAngle) {
 		angle = (float) ((dAngle * Math.PI)/180);
 	}
+
+	//H = [Initial Velocity^2 * sin(Angle In Radians (Double))] / 2 * Gravity
+	public float deriveHeight(float gravity) {
+		return (float) ((Math.pow(initialVelocityYF, 2.0) * Math.sin(angle)) / 2 * gravity) + initialHeightI;
+	}
 	
 }
