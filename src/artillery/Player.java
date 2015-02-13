@@ -1,5 +1,7 @@
 package artillery;
 
+import java.util.ArrayList;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
@@ -55,8 +57,22 @@ public class Player extends Base {
 		
 	}
 	@Override
+	public boolean mousePressed(MouseEvent mouse) {
+		System.out.println("Mouse pressed");
+		Vector2i position2D = new Vector2i((int) position.x, (int) position.z);
+		ArrayList<Vector2i> nodes = Main.terrain.getNearbyNodes(position2D, 30);
+		for (Vector2i node : nodes) {
+			System.out.println(node);
+			Vector2i newPos = node.subtract(position2D);
+			newPos.normalize();
+			newPos = newPos.multiply(20);
+			System.out.println(newPos);
+		}
+		return false;
+	}
+	
+	@Override
 	public boolean keyPressed(KeyEvent key) {
-		System.out.println("key down");
 		if (key.getKeyChar() == 'd') {
 			velocity = new Vector3f(1,0,0);
 		}
@@ -67,7 +83,6 @@ public class Player extends Base {
 	}
 	@Override
 	public boolean keyReleased(KeyEvent key) {
-		System.out.println("key released");
 		if (key.getKeyChar() == 'd'|| key.getKeyChar() == 'a') {
 			velocity = new Vector3f(0,0,0);
 		}

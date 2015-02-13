@@ -43,6 +43,16 @@ public class Terrain extends Base {
 		return null; // No line collision... must not be on terrain?
 	}
 	
+	public ArrayList<Vector2i> getNearbyNodes(Vector2i at, int radius) {
+		ArrayList<Vector2i> nodes = new ArrayList<Vector2i>();
+		for (int i = 1; i < fractal.size(); i++) { // Iterate through the fractal map to find a line that intersects our line over our position.
+			if (at.magnitude(fractal.get(i)) <= radius) {
+				nodes.add(fractal.get(i));
+			}
+		}
+		return nodes;
+	}
+	
 	private void createFractal(int fractures, float persistence) {
 		// Initialize fractal
 		fractal = new ArrayList<Vector2i>();

@@ -43,6 +43,10 @@ public class Vector2i {
 		return new Vector2i(this.x * v.x, this.y * v.y);
 	}
 
+	public Vector2i multiply(int v) {
+		return new Vector2i(this.x * v, this.y * v);
+	}
+	
 	int magnitude(Vector2i rhs) {
 		return this.subtract(rhs).magnitude();
 	}

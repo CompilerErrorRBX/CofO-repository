@@ -66,14 +66,6 @@ public class Window implements GLEventListener {
 
 			@Override
 			public void mouseClicked(MouseEvent event) {
-				for (Vector2i node : Terrain.fractal) {
-					//System.out.println(new Vector2i(node.x - ((int) mouseToWorldSpace.x + (Main.WIDTH/2)), node.y - ((int) mouseToWorldSpace.y) + (Main.HEIGHT/2)).magnitude());
-					System.out.println(node.x + " -> " + (mouseToWorldSpace.x + (Main.WIDTH/2)));
-					System.out.println(node.y + " -> " + (mouseToWorldSpace.z + (Main.HEIGHT/2)));
-					if (new Vector2i(node.x - ((int) mouseToWorldSpace.x + (Main.WIDTH/2)), node.y - ((int) mouseToWorldSpace.z) - (Main.HEIGHT/2)).magnitude() < 25) {
-						System.out.println("Move node.");
-					}
-				}
 				for (Base base : baseEventList) {
 					if(!base.mouseClicked(event)) {
 						return;
