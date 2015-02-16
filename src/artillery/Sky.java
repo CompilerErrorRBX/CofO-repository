@@ -4,13 +4,15 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
+import util.Vector3f;
+
 public class Sky extends Base {
 	private Vector3f offset = new Vector3f(-Terrain.mapSize / 2.0f, 0.0f, (Terrain.mapSize / 2.0f) - 5);
 	
 	public void init(Window win, GLAutoDrawable drawable) {
 		GL2 gl = drawable.getGL().getGL2();
 		
-		this.setTextureManager(new TextureManager());
+		//this.setTextureManager(new TextureManager());
 		
 		this.getCamera().set(new Vector3f(0, Terrain.mapSize, 0.2f),
 				new Vector3f(0, 0, 0), new Vector3f(0.0f, 1.0f, 0.0f)); // Set the camera's position.
@@ -34,7 +36,7 @@ public class Sky extends Base {
 		gl.glEnd();
 		
 		// Draw sun
-		this.getTextureManager().textureFromFile("texture/Sun.png", "png", false).bind(gl); // Set the texture.
+		//this.getTextureManager().textureFromFile("texture/Sun.png", "png", false).bind(gl); // Set the texture.
 		
 		gl.glBegin(GL2.GL_QUADS);
 		
@@ -52,7 +54,7 @@ public class Sky extends Base {
 		
 		gl.glPopMatrix();
 		
-		this.getTextureManager().textureFromFile("texture/Sun.png", "png", false).destroy(gl);
+		//this.getTextureManager().textureFromFile("texture/Sun.png", "png", false).destroy(gl);
 		
 	}
 }

@@ -1,4 +1,4 @@
-package artillery;
+package util;
 
 public class Color4f {
 	public float r = 0, g = 0, b = 0, a = 0;

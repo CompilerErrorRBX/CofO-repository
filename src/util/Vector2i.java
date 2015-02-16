@@ -1,7 +1,8 @@
-package artillery;
+package util;
+
 
 public class Vector2i {
-	public int x = 0, y = 0, z = 0;
+	public int x = 0, y = 0;
 
 	public Vector2i() {
 	}
@@ -17,14 +18,21 @@ public class Vector2i {
 	}
 
 	void normalize() {
-		int fLength = (int) Math.sqrt(x * x + y * y);
-
-		// Will also work for zero-sized vectors, but will change nothing
-		if (fLength > 1e-08) {
-			int fInvLength = (1 / fLength);
-			x *= fInvLength;
-			y *= fInvLength;
-		}
+		float fLength = this.magnitude();
+	    if (fLength > 0) {
+	    	x /= fLength;
+	    	y /= fLength;
+	    }
+	}
+	
+	public Vector2i unit() {
+		Vector2i vec = new Vector2i(x, y);
+		float fLength = vec.magnitude();
+	    if (fLength > 0) {
+	    	vec.x /= fLength;
+	    	vec.y /= fLength;
+	    }
+		return vec;
 	}
 
 	int magnitude() {
@@ -34,9 +42,17 @@ public class Vector2i {
 	public Vector2i subtract(Vector2i v) {
 		return new Vector2i(this.x - v.x, this.y - v.y);
 	}
-
+	
+	public Vector2i subtractf(Vector2f v) {
+		return new Vector2i(this.x - (int) v.x, this.y - (int) v.y);
+	}
+	
 	public Vector2i add(Vector2i v) {
 		return new Vector2i(this.x + v.x, this.y + v.y);
+	}
+	
+	public Vector2i addf(Vector2f v) {
+		return new Vector2i((int) (this.x + v.x), (int) (this.y + v.y));
 	}
 
 	public Vector2i multiply(Vector2i v) {
@@ -47,11 +63,15 @@ public class Vector2i {
 		return new Vector2i(this.x * v, this.y * v);
 	}
 	
-	int magnitude(Vector2i rhs) {
+	public Vector2f toVector2f() {
+		return new Vector2f(x, y);
+	}
+	
+	public int magnitude(Vector2i rhs) {
 		return this.subtract(rhs).magnitude();
 	}
 	
-	static Vector2i getLineIntercept(Vector2i p1, Vector2i p2, Vector2i p3, Vector2i p4) {
+	public static Vector2i getLineIntercept(Vector2i p1, Vector2i p2, Vector2i p3, Vector2i p4) {
 		int d = (p1.x - p2.x) * (p3.y - p4.y) - (p1.y - p2.y) * (p3.x - p4.x);
 		if (d == 0) return null; // return null if parallel.
 		Vector2i intercept = new Vector2i(
@@ -63,10 +83,9 @@ public class Vector2i {
 		return intercept;
 	}
 
-	void getValues(int x, int y, int z) {
-		x = this.z;
+	void getValues(int x, int y) {
+		x = this.x;
 		y = this.y;
-		z = this.z;
 	}
 
 	int cross(Vector3f v1) {

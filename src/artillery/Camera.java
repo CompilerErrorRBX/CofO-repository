@@ -1,5 +1,7 @@
 package artillery;
 
+import util.Vector3f;
+
 public class Camera {
 	private Vector3f vEye = new Vector3f();
 	private Vector3f vTarget = new Vector3f();

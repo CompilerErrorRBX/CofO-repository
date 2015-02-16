@@ -12,6 +12,8 @@ import javax.media.opengl.GLException;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.glu.GLU;
 
+import util.Vector2i;
+import util.Vector3f;
 import artillery.Base.DrawMode;
 
 import com.jogamp.newt.event.KeyEvent;
@@ -25,8 +27,12 @@ import com.jogamp.newt.opengl.GLWindow;
 import com.jogamp.opengl.util.FPSAnimator;
 
 public class Window implements GLEventListener {
+	public static final int FPS = 60; // Setting the refresh rate for our window.
+	
 	static GLProfile glp;
 	static GLU glu = new GLU();
+	
+	static GLWindow glWindow;
 	
 	public static GLAutoDrawable drawable;
 	
@@ -40,7 +46,6 @@ public class Window implements GLEventListener {
 	// Window size (width,height)
 	Vector2i vSize2i = new Vector2i();
 	
-	public static final int FPS = 30; // Setting the refresh rate for our window.
 
 	public ArrayList<Base> baseList = new ArrayList<Base>();
 	public ArrayList<Base> baseEventList = new ArrayList<Base>();
@@ -53,7 +58,7 @@ public class Window implements GLEventListener {
 		glp = GLProfile.getDefault();
 		GLCapabilities caps = new GLCapabilities(glp);
 
-		GLWindow glWindow = GLWindow.create(caps);
+		glWindow = GLWindow.create(caps);
 		glWindow.setSize(width, height);
 		glWindow.setVisible(true);
 		glWindow.setTitle(title);
@@ -210,6 +215,8 @@ public class Window implements GLEventListener {
 		GL2 gl = drawable.getGL().getGL2();
 		
 		mouseToWorldSpace = ScreenSpaceToOpenGL(mouseCoords.x, mouseCoords.y, 1.0f, drawable);
+		
+		Main.physics.step();
 		
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 		

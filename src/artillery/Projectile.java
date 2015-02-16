@@ -2,6 +2,9 @@ package artillery;
 
 import java.util.Date;
 
+import util.Vector2f;
+import util.Vector2i;
+
 public class Projectile {
 
 	private int initialVelocityXI = 0;
@@ -43,6 +46,15 @@ public class Projectile {
 		
 	}
 	
+	public Projectile(Vector2i initialVelocity) {
+		initialVelocityXI = initialVelocity.x;
+		initialVelocityYI = initialVelocity.y;
+	}
+	
+	public Projectile(Vector2f initialVelocity) {
+		initialVelocityXF = initialVelocity.x;
+		initialVelocityYF = initialVelocity.y;
+	}
 	
 	//Getters
 	/** @return The initial X velocity of the projectile in an int form. */
@@ -110,6 +122,8 @@ public class Projectile {
 		return position;
 	}
 	/** @return The displacement of the projectile in meters. */
+	// Can you get the slope of the tangent line at this point so that we can also get an accurate angle for the shell?
+	// Mainly to make collision detection easier.
 	public Vector2f getPositionf() {
 		float t = timeCreated.getTime() - new Date().getTime();
 		Vector2f position = new Vector2f();
@@ -117,7 +131,6 @@ public class Projectile {
 		position.y = (float) (initialVelocityYF * t * Math.sin(angle) - 0.5 * EARTH_GRAVITY_FLOAT * t * t);
 		return position;
 	}
-	
 	
 	//Setters
 	/** @param accelerationXf The acceleration along the X-axis. */
@@ -166,6 +179,7 @@ public class Projectile {
 	}
 	/** @param dAngle The angle in degrees. */
 	public void setAngleDegrees(float dAngle) {
+		// There is a Math.deg method built in just so you know :)
 		angle = (float) ((dAngle * Math.PI)/180);
 	}
 

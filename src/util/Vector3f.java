@@ -1,4 +1,4 @@
-package artillery;
+package util;
 
 public class Vector3f {
 	final float EPSILON = 0.005f; // error tolerance for check
@@ -17,7 +17,7 @@ public class Vector3f {
 		this.z = z;
 	}
 
-	void setValues(float x, float y, float z) {
+	public void setValues(float x, float y, float z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
