@@ -8,5 +8,8 @@
 	<classpathentry kind="lib" path="jogl/jogl-all-noawt-natives-windows-amd64.jar"/>
 	<classpathentry kind="lib" path="jogl/jogl-all-noawt.jar"/>
 	<classpathentry kind="lib" path="jogl/jogl-all.jar"/>
+	<classpathentry kind="lib" path="luaJ/luaj-jme-3.0.jar"/>
+	<classpathentry kind="lib" path="luaJ/luaj-jse-3.0.jar"/>
+	<classpathentry kind="lib" path="luaJ/luaj-sources-3.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
