@@ -1,8 +1,5 @@
 package utility;
 
-import com.jogamp.opengl.math.Matrix4;
-import com.jogamp.opengl.math.Quaternion;
-
 public class CFrame {
 	public Vector3f p = new Vector3f();
 	public Vector3f lookVector = new Vector3f();

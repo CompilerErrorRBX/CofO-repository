@@ -64,10 +64,10 @@ public class Main {
 
 		Script script = new Script(new File("scripts/test.lua"));
 		
-		Terrain terrain = new Terrain(128, 128, 1, 0.4f, caveRandom);
+		//Terrain terrain = new Terrain(128, 128, 1, 0.4f, caveRandom);
 		
 		//System.out.println(new CFrame(new CFrame(1, 7, 4).p, new CFrame(10, 43, 7).p));
 		
-		window.create(version, WIDTH, HEIGHT);
+		//window.create(version, WIDTH, HEIGHT);
 	}
 }

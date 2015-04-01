@@ -176,7 +176,6 @@ public class Camera {
 		double viewDistance = norm(zDirection);
 		normalize(zDirection);
 		double[] yDirection = new double[] { upx, upy, upz };
-		double upLength = norm(yDirection);
 		double proj = yDirection[0] * zDirection[0] + yDirection[1]
 				* zDirection[1] + yDirection[2] * zDirection[2];
 		yDirection[0] = yDirection[0] - proj * zDirection[0];
@@ -201,9 +200,6 @@ public class Camera {
 		eyex = refx + viewDistance * zDirection[0];
 		eyey = refy + viewDistance * zDirection[1];
 		eyez = refz + viewDistance * zDirection[2];
-//		upx = upLength * yDirection[0];
-//		upy = upLength * yDirection[1];
-//		upz = upLength * yDirection[2];
 	}
 
 	private void reflectInAxis(double[] axis, double[] source,
@@ -297,7 +293,6 @@ public class Camera {
 				refx += -cameraMoveSpeed * zDirection[0];
 				refy += -cameraMoveSpeed * zDirection[1];
 				refz += -cameraMoveSpeed * zDirection[2];
-				System.out.println(coordinateFrame);
 			}
 			if (key.getKeyChar() == 's') {
 				double[] zDirection = new double[] { eyex - refx, eyey - refy, eyez - refz };
