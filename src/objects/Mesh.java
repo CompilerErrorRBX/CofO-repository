@@ -56,6 +56,10 @@ public class Mesh extends Container {
 		pParent.children.add(this);
 	}
 	public void setMeshId(String filePath) {
+		this.vertices.clear();
+		this.textureCoords.clear();
+		this.normals.clear();
+		this.faces.clear();
 		objToOpenGL(filePath);
 	}
 	private boolean objToOpenGL(String filePath) {

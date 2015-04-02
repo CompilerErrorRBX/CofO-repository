@@ -96,14 +96,18 @@ public class BasePart extends Container implements Renderable {
 		
 		for (int i = 0; i < faces.size(); i++) {
 			for (int j = 0; j < faces.get(i).length; j++) {
-				Vector3f thisVert = vertices.get((int) (faces.get(i)[j].x-1));
-				Vector3f thisNorm = normals.get((int) (faces.get(i)[j].z-1));
-				if (faces.get(i)[j].y > 0) {
-					Vector2f texCoord = textureCoords.get((int) (faces.get(i)[j].y-1));
-					gl.glTexCoord2f(texCoord.x, texCoord.y);
+				if (faces.size() == 0 || faces.get(i).length == 0) {
+					break;
+				} else { 
+					Vector3f thisVert = vertices.get((int) (faces.get(i)[j].x-1));
+					Vector3f thisNorm = normals.get((int) (faces.get(i)[j].z-1));
+					if (faces.get(i)[j].y > 0) {
+						Vector2f texCoord = textureCoords.get((int) (faces.get(i)[j].y-1));
+						gl.glTexCoord2f(texCoord.x, texCoord.y);
+					}
+					gl.glNormal3f(thisNorm.x, thisNorm.y, thisNorm.z);
+					gl.glVertex3f((position.x + thisVert.x), (position.y + thisVert.y), (position.z + thisVert.z));
 				}
-				gl.glNormal3f(thisNorm.x, thisNorm.y, thisNorm.z);
-				gl.glVertex3f((position.x + thisVert.x), (position.y + thisVert.y), (position.z + thisVert.z));
 			}
 		}
 		//gl.glPopMatrix();

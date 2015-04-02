@@ -13,7 +13,19 @@ public class Script extends Container {
 			+ "local Vector3 = require('lua.Vector3') "
 			+ "local Color3 = require('lua.Color3') "
 			+ "local game = require('lua.Core') "
-			+ "local Game = game ";
+			+ "local Game = game "
+			+ "function wait(time) "
+			+ "		t = os.clock() "
+			+ "		for i = 1, math.huge do "
+			+ "			timeElapsed = os.clock()-t "
+			+ "			if (timeElapsed >= time) then "
+			+ "				return timeElapsed "
+			+ "			end "
+			+ "		end "
+			+ "end "
+			+ "function time() "
+			+ "		return os.clock() "
+			+ "end ";
 	public Script() {
 		init();
 	}
@@ -36,7 +48,13 @@ public class Script extends Container {
 	}
 	private void init() {
 		name = "Script";
-		this.execute();
+		new Thread() {
+			@SuppressWarnings("deprecation")
+			public void run() {
+				execute();
+				stop();
+			}
+		}.start();
 	}
 	protected void execute() {
 		Globals globals = JsePlatform.standardGlobals();
