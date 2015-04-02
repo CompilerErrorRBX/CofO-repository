@@ -15,7 +15,6 @@ import utility.Vector2f;
 import utility.Vector3f;
 
 public class BasePart extends Container implements Renderable {
-	public String name = "Cube";
 	public Vector3f position = new Vector3f(); // Set initial position to 0, 0, 0;
 	public Color3f color = new Color3f(5, 5, 5); // Default color is white.
 	public float transparency = 0.0f;
@@ -23,17 +22,18 @@ public class BasePart extends Container implements Renderable {
 	
 	public BasePart(Container pParent) {
 		this.setParent(pParent); // this.setParent comes from Container.
-		init();
+		initialize();
 	}
 	public BasePart() {
-		init();
+		initialize();
 	}
 	
 	public void setName(String str) {
 		name = str;
 	}
 	
-	public void init() {
+	private void initialize() {
+		name = "Part";
 		new Mesh("3DModels/Cube.obj", this);
 		Main.window.addBase(this);
 	}

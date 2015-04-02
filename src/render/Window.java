@@ -228,6 +228,67 @@ public class Window implements GLEventListener {
 		GLAutoDrawable drawable = pDrawable;
 		GL2 gl = drawable.getGL().getGL2();
 	
+
+		gl.glEnable(GL2.GL_NORMALIZE);
+		gl.glEnable(GL2.GL_COLOR_MATERIAL);
+		gl.glEnable(GL2.GL_LIGHTING);
+		gl.glEnable(GL2.GL_LIGHT0);
+		gl.glEnable(GL2.GL_DEPTH_TEST);
+		gl.glEnable(GL2.GL_TEXTURE_2D);
+		gl.glEnable(GL.GL_BLEND);
+		gl.glEnable(GL2.GL_CULL_FACE);
+		gl.glClearColor(0, 0.75f, 1, 1);
+		gl.glPolygonOffset(2.5f, 0);
+		
+		// Handle lighting
+		
+		gl.glLightModelfv(GL2.GL_LIGHT_MODEL_AMBIENT, asFloatBuffer(new float[]{0.05f, 0.05f, 0.05f}));
+		gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, asFloatBuffer(new float[]{brightness, brightness, brightness}));
+		gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_AMBIENT, asFloatBuffer(new float[]{0.05f, 0.05f, 0.05f}));
+		gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPECULAR, asFloatBuffer(new float[]{0, 0, 0, 0.5f}));
+		gl.glColorMaterial(GL2.GL_FRONT, GL2.GL_DIFFUSE);
+		gl.glShadeModel(GL2.GL_SMOOTH);
+		
+		// Handle material 
+		
+		gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SPECULAR, asFloatBuffer(new float[]{1.0f, 0, 0, 1.0f}));
+		gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT, asFloatBuffer(new float[]{0, 0.1f, 0.1f, 1.0f}));
+		gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_DIFFUSE, asFloatBuffer(new float[]{0, 1.0f, 0, 1.0f}));
+		gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_EMISSION, asFloatBuffer(new float[]{0.05f, 0, 0, 1.0f}));
+		gl.glMaterialf(GL2.GL_FRONT_AND_BACK, GL2.GL_SHININESS, 5.0f);
+
+		// Handle culling
+		
+		gl.glCullFace(GL2.GL_BACK);
+		
+		// Handle shadowing
+		
+		// Clamp texture coordinates because we only want one shadow.
+		// Use 'TO_EDGE' to prevent the texture boarders from affecting the shadow map through linear texture filtering.
+		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP_TO_EDGE);
+		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP_TO_EDGE);
+		
+		// Enable bilinear texture filtering. This means that the color will be a weighted value of
+		// the four textures elements that are closest to the center of the pixel being textured.
+		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_LINEAR);
+		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_LINEAR);
+		
+		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_DEPTH_TEXTURE_MODE, GL2.GL_INTENSITY);
+		gl.glTexParameterf(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_COMPARE_FAIL_VALUE_ARB, 0.5f);
+		
+		gl.glTexGeni(GL2.GL_S, GL2.GL_TEXTURE_GEN_MODE, GL2.GL_EYE_LINEAR);
+		gl.glTexGeni(GL2.GL_T, GL2.GL_TEXTURE_GEN_MODE, GL2.GL_EYE_LINEAR);
+		gl.glTexGeni(GL2.GL_R, GL2.GL_TEXTURE_GEN_MODE, GL2.GL_EYE_LINEAR);
+		gl.glTexGeni(GL2.GL_Q, GL2.GL_TEXTURE_GEN_MODE, GL2.GL_EYE_LINEAR);
+		
+		// Handle misc
+		
+		gl.glDepthFunc(GL2.GL_LEQUAL);
+		gl.glClearDepth(1.0f);
+		
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+		
+		
 //		generateTextureCoordinates(drawable);
 //		setUpFrameBufferObject(drawable);
 //		drawShadowMap(drawable);
@@ -301,66 +362,6 @@ public class Window implements GLEventListener {
 		
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 		gl.glLoadIdentity();
-
-		gl.glEnable(GL2.GL_NORMALIZE);
-		gl.glEnable(GL2.GL_COLOR_MATERIAL);
-		gl.glEnable(GL2.GL_LIGHTING);
-		gl.glEnable(GL2.GL_LIGHT0);
-		gl.glEnable(GL2.GL_DEPTH_TEST);
-		gl.glEnable(GL2.GL_TEXTURE_2D);
-		gl.glEnable(GL.GL_BLEND);
-		gl.glEnable(GL2.GL_CULL_FACE);
-		gl.glClearColor(0, 0.75f, 1, 1);
-		gl.glPolygonOffset(2.5f, 0);
-		
-		// Handle lighting
-		
-		gl.glLightModelfv(GL2.GL_LIGHT_MODEL_AMBIENT, asFloatBuffer(new float[]{0.05f, 0.05f, 0.05f}));
-		gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, asFloatBuffer(new float[]{brightness, brightness, brightness}));
-		gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_AMBIENT, asFloatBuffer(new float[]{0.05f, 0.05f, 0.05f}));
-		gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPECULAR, asFloatBuffer(new float[]{0, 0, 0, 0.5f}));
-		gl.glColorMaterial(GL2.GL_FRONT, GL2.GL_DIFFUSE);
-		gl.glShadeModel(GL2.GL_SMOOTH);
-		
-		// Handle material 
-		
-		gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SPECULAR, asFloatBuffer(new float[]{1.0f, 0, 0, 1.0f}));
-		gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT, asFloatBuffer(new float[]{0, 0.1f, 0.1f, 1.0f}));
-		gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_DIFFUSE, asFloatBuffer(new float[]{0, 1.0f, 0, 1.0f}));
-		gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_EMISSION, asFloatBuffer(new float[]{0.05f, 0, 0, 1.0f}));
-		gl.glMaterialf(GL2.GL_FRONT_AND_BACK, GL2.GL_SHININESS, 5.0f);
-
-		// Handle culling
-		
-		gl.glCullFace(GL2.GL_BACK);
-		
-		// Handle shadowing
-		
-		// Clamp texture coordinates because we only want one shadow.
-		// Use 'TO_EDGE' to prevent the texture boarders from affecting the shadow map through linear texture filtering.
-		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP_TO_EDGE);
-		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP_TO_EDGE);
-		
-		// Enable bilinear texture filtering. This means that the color will be a weighted value of
-		// the four textures elements that are closest to the center of the pixel being textured.
-		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_LINEAR);
-		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_LINEAR);
-		
-		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_DEPTH_TEXTURE_MODE, GL2.GL_INTENSITY);
-		gl.glTexParameterf(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_COMPARE_FAIL_VALUE_ARB, 0.5f);
-		
-		gl.glTexGeni(GL2.GL_S, GL2.GL_TEXTURE_GEN_MODE, GL2.GL_EYE_LINEAR);
-		gl.glTexGeni(GL2.GL_T, GL2.GL_TEXTURE_GEN_MODE, GL2.GL_EYE_LINEAR);
-		gl.glTexGeni(GL2.GL_R, GL2.GL_TEXTURE_GEN_MODE, GL2.GL_EYE_LINEAR);
-		gl.glTexGeni(GL2.GL_Q, GL2.GL_TEXTURE_GEN_MODE, GL2.GL_EYE_LINEAR);
-		
-		// Handle misc
-		
-		gl.glDepthFunc(GL2.GL_LEQUAL);
-		gl.glClearDepth(1.0f);
-		
-		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-		
 	}
 	
 	private static void drawScene(GLAutoDrawable drawable) {

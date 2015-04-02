@@ -25,5 +25,7 @@ public class Color3f {
 	public Color3f subtract(Color3f c2) {
 		return new Color3f(this.r - c2.r, this.b - c2.b, this.g - c2.g);
 	}
-
+	public String toString() {
+		return "(" + r + ", " + g + ", " + b + ")";
+	}
 }

@@ -2,12 +2,14 @@ package objects;
 
 import java.util.ArrayList;
 
+import utility.Event;
 import utility.Vector2f;
 import utility.Vector3f;
 
 public class Container {
 	public Container parent = null;
 	public String name = "";
+	public Event Changed = new Event();
 	protected ArrayList<Vector3f> vertices = new ArrayList<Vector3f>();
 	protected ArrayList<Vector2f> textureCoords = new ArrayList<Vector2f>();
 	protected ArrayList<Vector3f> normals = new ArrayList<Vector3f>();
@@ -38,5 +40,8 @@ public class Container {
 	
 	protected void parentRenderModifier() {
 		
+	}
+	public String toString() {
+		return name;
 	}
 }

@@ -2,6 +2,8 @@ package objects;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Scanner;
 
 import utility.Vector2f;
@@ -9,10 +11,25 @@ import utility.Vector3f;
 
 public class Mesh extends Container {
 	public String name = "Mesh";
+	public String meshId;
+	
+	public Mesh() {
+		initialize();
+		setParent(null);
+	}
+	public Mesh(Container pParent) {
+		initialize();
+		setParent(pParent);
+	}
 	public Mesh(String filePath, Container pParent) {
+		initialize();
 		if (objToOpenGL(filePath)) { // if the filepath leads to a valid file then
 			setParent(pParent);
 		}
+	}
+	
+	private void initialize() {
+		name = "Mesh";
 	}
 	
 	public void parentRenderModifier() {
@@ -38,13 +55,12 @@ public class Mesh extends Container {
 		if (pParent == null) return;
 		pParent.children.add(this);
 	}
-	
+	public void setMeshId(String filePath) {
+		objToOpenGL(filePath);
+	}
 	private boolean objToOpenGL(String filePath) {
 		try {
 			Scanner reader = new Scanner(new File(filePath));
-			reader.nextLine();
-			reader.nextLine();
-			reader.nextLine();
 			try {
 				while (reader.hasNext()) {
 					String type = reader.next();

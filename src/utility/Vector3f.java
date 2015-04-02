@@ -2,7 +2,7 @@ package utility;
 
 import java.util.logging.Logger;
 
-public class Vector3f  {
+public class Vector3f {
     
     private static final Logger logger = Logger.getLogger(Vector3f.class.getName());
 
