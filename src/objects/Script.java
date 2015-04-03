@@ -6,9 +6,6 @@ import java.io.StringReader;
 import java.util.Scanner;
 
 import org.luaj.vm2.Globals;
-import org.luaj.vm2.LuaTable;
-import org.luaj.vm2.LuaValue;
-import org.luaj.vm2.lib.OneArgFunction;
 import org.luaj.vm2.lib.jse.JsePlatform;
 
 public class Script extends Container {

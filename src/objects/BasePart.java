@@ -95,10 +95,10 @@ public class BasePart extends Container implements Renderable {
 		gl.glRotatef(rotation.z, 0, 0, 1);
 		
 		for (int i = 0; i < faces.size(); i++) {
-			for (int j = 0; j < faces.get(i).length; j++) { 
+			for (int j = 0; j < faces.get(i).length; j++) {
 				Vector3f thisVert = vertices.get((int) (faces.get(i)[j].x-1));
 				Vector3f thisNorm = normals.get((int) (faces.get(i)[j].z-1));
-				if (faces.get(i)[j].y > 0) { 
+				if (faces.get(i)[j].y > 0) {
 					Vector2f texCoord = textureCoords.get((int) (faces.get(i)[j].y-1));
 					gl.glTexCoord2f(texCoord.x, texCoord.y);
 				}
